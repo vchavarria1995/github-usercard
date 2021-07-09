@@ -18,7 +18,7 @@ entryPoint.appendChild(cardMaker(res.data));
 
     Skip to STEP 3.
 */
-
+console.log(gitInfo)
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
@@ -37,7 +37,15 @@ entryPoint.appendChild(cardMaker(res.data));
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+const followerCards = (array) => {
+  followersArray.forEach(str => {axios.get(`https://api.github.com/users/${str}`)
+  .then(({data}) => {
+    entryPoint.appendChild(cardMaker(data))})
+  .catch(err => console.log(err))
+})}
+followerCards(followersArray)
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
