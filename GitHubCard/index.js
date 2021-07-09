@@ -1,8 +1,15 @@
+import axios from 'axios'
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+const gitInfo = axios.get('https://api.github.com/users/vchavarria1995')
+.then(res => {console.log(res.data)
+entryPoint.appendChild(cardMaker(res.data));
+})
+.catch(err => console.log(err))
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -11,11 +18,13 @@
 
     Skip to STEP 3.
 */
-
+console.log(gitInfo)
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
+
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -28,7 +37,15 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+const followerCards = (array) => {
+  followersArray.forEach(str => {axios.get(`https://api.github.com/users/${str}`)
+  .then(({data}) => {
+    entryPoint.appendChild(cardMaker(data))})
+  .catch(err => console.log(err))
+})}
+followerCards(followersArray)
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +66,56 @@ const followersArray = [];
       </div>
     </div>
 */
+
+const entryPoint = document.querySelector('div.cards')
+
+function cardMaker({avatar_url, name, login, location, html_url, followers, following, bio}) {
+  const card = document.createElement('div')
+  card.classList.add('card')
+
+  const profileImg = document.createElement('img')
+  card.appendChild(profileImg)
+  profileImg.src = avatar_url
+
+  const divCard = document.createElement('div')
+  card.appendChild(divCard)
+  divCard.classList.add('card-info')
+
+  const cardName = document.createElement('h3')
+  divCard.appendChild(cardName)
+  cardName.classList.add('name')
+  cardName.textContent = name
+
+  const username = document.createElement('p')
+  divCard.appendChild(username)
+  username.textContent = login
+
+  const gitLocation = document.createElement('p')
+  divCard.appendChild(gitLocation)
+  gitLocation.getAttribute('href', html_url)
+  gitLocation.textContent = 'Location: ' + location
+
+  const profileText = document.createElement('p')
+  divCard.appendChild(profileText)
+  profileText.textContent = 'Profile: ' + html_url
+
+  const githubLink = document.createElement('a')
+  profileText.appendChild(githubLink)
+
+  const gitFollowers = document.createElement('p')
+  divCard.appendChild(gitFollowers)
+  gitFollowers.textContent = 'Followers: ' + followers
+
+  const gitFollowing = document.createElement('p')
+  divCard.appendChild(gitFollowing)
+  gitFollowing.textContent = 'Following: ' + following
+
+  const aboutMe = document.createElement('p')
+  divCard.appendChild(aboutMe)
+  aboutMe.textContent = 'Bio: ' + bio
+
+return card
+}
 
 /*
   List of LS Instructors Github username's:
